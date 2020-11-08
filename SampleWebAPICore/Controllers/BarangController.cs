@@ -83,20 +83,23 @@ namespace SampleWebAPICore.Controllers
 
         // POST api/<BarangController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(Barang barang)
         {
+            return Ok($"KodeBarang: {barang.KodeBarang} - NamaBarang: {barang.NamaBarang} - Stok: {barang.Stok}");
         }
 
         // PUT api/<BarangController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{KodeBarang}")]
+        public IActionResult Put(string KodeBarang, Barang barang)
         {
+            return Ok($"KodeBarang: {KodeBarang} - NamaBarang: {barang.NamaBarang} - Stok: {barang.Stok}");
         }
 
         // DELETE api/<BarangController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{KodeBarang}")]
+        public IActionResult Delete(string KodeBarang)
         {
+            return Ok($"Anda berhasil mendele data {KodeBarang}");
         }
     }
 }

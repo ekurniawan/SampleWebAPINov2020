@@ -56,7 +56,7 @@ namespace SampleWebAPICore.Controllers
             return result;
         }
 
-        //menambahkan custom route
+        //menambahkan custom route pada web api
         [HttpGet]
         [Route("GetByName/{namaBarang}")]
         public IEnumerable<Barang> GetByName(string namaBarang)

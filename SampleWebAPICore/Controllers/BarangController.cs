@@ -57,14 +57,27 @@ namespace SampleWebAPICore.Controllers
         }
 
         //menambahkan custom route pada web api
+        //https://localhost:44313/api/Barang/DataPelanggan/123?nama=Budi
         [HttpGet]
         [Route("GetByName/{namaBarang}")]
         public IEnumerable<Barang> GetByName(string namaBarang)
         {
             var results = from b in lstBarang
-                          where b.NamaBarang.Contains(namaBarang)
+                          where b.NamaBarang.ToLower().Contains(namaBarang.ToLower())
                           select b;
 
+            return results;
+        }
+
+
+        //https://localhost:44313/api/Barang/GetByNamaDanStok/Key?stok=10
+        [HttpGet]
+        [Route("GetByNamaDanStok/{nama}")]
+        public IEnumerable<Barang> GetByNamaDanStok(string nama,[FromQuery] int stok)
+        {
+            var results = from b in lstBarang
+                          where b.NamaBarang.ToLower().Contains(nama.ToLower()) && b.Stok > stok
+                          select b;
             return results;
         }
 

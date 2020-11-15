@@ -8,10 +8,10 @@ namespace SampleWebAPICore.Models
     //
     public class Barang
     {
-        public string KodeBarang { get; set; }
-        public string NamaBarang { get; set; }
-        public int Stok { get; set; }
-        public decimal HargaBeli { get; set; }
-        public decimal HargaJual { get; set; }
+        public string kodebarang { get; set; }
+        public string namabarang { get; set; }
+        public int stok { get; set; }
+        public decimal hargabeli { get; set; }
+        public decimal hargajual { get; set; }
     }
 }

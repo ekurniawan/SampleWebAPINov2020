@@ -13,29 +13,33 @@ namespace SampleWebAPICore.Controllers
     [ApiController]
     public class BarangController : ControllerBase
     {
-        private List<Barang> lstBarang = new List<Barang>();
+       
+       
 
+        private List<Barang> lstBarang = new List<Barang>();
         //konstruktor 
         public BarangController()
         {
             Barang barang1 = new Barang
             {
-                KodeBarang = "KK001",
-                NamaBarang = "Keyboard Logitech",
-                Stok = 12,
-                HargaBeli = 200000,
-                HargaJual = 250000
+                kodebarang = "KK001",
+                namabarang = "Keyboard Logitech",
+                stok = 12,
+                hargabeli = 200000,
+                hargajual = 250000
             };
             Barang barang2 = new Barang
             {
-                KodeBarang = "KK002",
-                NamaBarang = "Keyboard Samsung",
-                Stok = 13,
-                HargaBeli = 2500000,
-                HargaJual = 3000000
+                kodebarang = "KK002",
+                namabarang = "Keyboard Samsung",
+                stok = 13,
+                hargabeli = 2500000,
+                hargajual = 3000000
             };
             lstBarang.Add(barang1);
             lstBarang.Add(barang2);
+
+            
         }
 
         // GET: api/<BarangController>
@@ -51,7 +55,7 @@ namespace SampleWebAPICore.Controllers
         public Barang Get(string KodeBarang)
         {
             var result = (from b in lstBarang
-                          where b.KodeBarang == KodeBarang
+                          where b.kodebarang == KodeBarang
                           select b).SingleOrDefault();
             return result;
         }
@@ -63,7 +67,7 @@ namespace SampleWebAPICore.Controllers
         public IEnumerable<Barang> GetByName(string namaBarang)
         {
             var results = from b in lstBarang
-                          where b.NamaBarang.ToLower().Contains(namaBarang.ToLower())
+                          where b.namabarang.ToLower().Contains(namaBarang.ToLower())
                           select b;
 
             return results;
@@ -76,7 +80,7 @@ namespace SampleWebAPICore.Controllers
         public IEnumerable<Barang> GetByNamaDanStok(string nama,[FromQuery] int stok)
         {
             var results = from b in lstBarang
-                          where b.NamaBarang.ToLower().Contains(nama.ToLower()) && b.Stok > stok
+                          where b.namabarang.ToLower().Contains(nama.ToLower()) && b.stok > stok
                           select b;
             return results;
         }
@@ -85,14 +89,14 @@ namespace SampleWebAPICore.Controllers
         [HttpPost]
         public IActionResult Post(Barang barang)
         {
-            return Ok($"KodeBarang: {barang.KodeBarang} - NamaBarang: {barang.NamaBarang} - Stok: {barang.Stok}");
+            return Ok($"KodeBarang: {barang.kodebarang} - NamaBarang: {barang.namabarang} - Stok: {barang.stok}");
         }
 
         // PUT api/<BarangController>/5
         [HttpPut("{KodeBarang}")]
         public IActionResult Put(string KodeBarang, Barang barang)
         {
-            return Ok($"KodeBarang: {KodeBarang} - NamaBarang: {barang.NamaBarang} - Stok: {barang.Stok}");
+            return Ok($"KodeBarang: {KodeBarang} - NamaBarang: {barang.namabarang} - Stok: {barang.stok}");
         }
 
         // DELETE api/<BarangController>/5

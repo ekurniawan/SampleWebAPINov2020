@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
+
 namespace SampleWebAPICore
 {
     public class Startup
@@ -26,6 +27,9 @@ namespace SampleWebAPICore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //tambah
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

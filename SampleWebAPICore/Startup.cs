@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using SampleWebAPICore.DAL;
 
 namespace SampleWebAPICore
 {
@@ -27,8 +27,6 @@ namespace SampleWebAPICore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
-            //tambah
             
         }
 

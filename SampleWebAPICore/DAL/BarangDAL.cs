@@ -8,12 +8,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace SampleWebAPICore.DAL
 {
-    public class BarangDAL : IBarang
+    public class BarangDAL 
     {
         private IConfiguration _config;
         public BarangDAL(IConfiguration config)
         {
             _config = config;
+        }
+
+        public BarangDAL()
+        {
         }
 
         private string GetConnStr()
@@ -30,6 +34,7 @@ namespace SampleWebAPICore.DAL
         {
             using(NpgsqlConnection conn = new NpgsqlConnection(GetConnStr()))
             {
+                //data dari datatabase ditampung di list
                 List<Barang> lstBarang = new List<Barang>();
                 string strSql = @"select * from barang order by namabarang asc";
                 NpgsqlCommand cmd = new NpgsqlCommand(strSql, conn);
@@ -52,6 +57,8 @@ namespace SampleWebAPICore.DAL
                 dr.Close();
                 cmd.Dispose();
                 conn.Close();
+
+                return lstBarang;
             }
         }
 

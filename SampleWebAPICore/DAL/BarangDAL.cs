@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Npgsql;
 using Microsoft.Extensions.Configuration;
+using Dapper;
 
 namespace SampleWebAPICore.DAL
 {
@@ -20,6 +21,7 @@ namespace SampleWebAPICore.DAL
         {
         }
 
+        //mengambil connection string
         private string GetConnStr()
         {
             return _config.GetConnectionString("DefaultConnection");
@@ -28,6 +30,16 @@ namespace SampleWebAPICore.DAL
         public void Delete(string kodebarang)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Barang> GetAllBarang()
+        {
+            using (NpgsqlConnection conn = new NpgsqlConnection(GetConnStr()))
+            {
+                string strSql = @"select * from barang order by namabarang asc";
+                var results = conn.Query<Barang>(strSql);
+                return results;
+            }
         }
 
         public IEnumerable<Barang> GetAll()

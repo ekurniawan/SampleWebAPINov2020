@@ -25,7 +25,7 @@ namespace SampleWebAPICore.Controllers
         [HttpGet]
         public IEnumerable<Barang> Get()
         {
-            var results = barangDal.GetAll();
+            var results = barangDal.GetAllBarang();
             return results;
         }
 

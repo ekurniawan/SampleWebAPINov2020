@@ -93,7 +93,7 @@ namespace SampleWebAPICore.Controllers
                 try
                 {
                     conn.Execute(strSql, param);
-                    return Ok($"Data kode {barang.kodebarang} berhasil diupdate");
+                    return Ok($"Data kode {kodebarang} berhasil diupdate");
                 }
                 catch (NpgsqlException ex)
                 {
@@ -103,9 +103,24 @@ namespace SampleWebAPICore.Controllers
         }
 
         // DELETE api/<BarangDbController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{kodebarang}")]
+        public IActionResult Delete(string kodebarang)
         {
+            using (NpgsqlConnection conn = new NpgsqlConnection(strConn))
+            {
+                string strSql = @"delete from barang where kodebarang=@kodebarang";
+                var param = new { kodebarang = kodebarang };
+
+                try
+                {
+                    conn.Execute(strSql, param);
+                    return Ok($"Data kode {kodebarang} berhasil didelete");
+                }
+                catch (NpgsqlException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
         }
     }
 }

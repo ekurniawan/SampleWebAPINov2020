@@ -46,7 +46,7 @@ namespace SampleWebAPICore.Controllers
             {
                 string strSql = @"select * from barang where kodebarang=@kodebarang";
                 var param = new { kodebarang = kodebarang };
-                var result = conn.QuerySingle<Barang>(strSql, param);
+                var result = conn.QuerySingleOrDefault<Barang>(strSql, param);
                 return result;
             }
         }
@@ -84,6 +84,10 @@ namespace SampleWebAPICore.Controllers
         [HttpPut("{kodebarang}")]
         public IActionResult Put(string kodebarang, Barang barang)
         {
+            var result = Get(kodebarang);
+            if (result == null)
+                return BadRequest($"Barang kode {kodebarang} tidak ditemukan");
+
             using (NpgsqlConnection conn = new NpgsqlConnection(strConn))
             {
                 string strSql = @"update barang set namabarang=@namabarang,
@@ -106,6 +110,10 @@ namespace SampleWebAPICore.Controllers
         [HttpDelete("{kodebarang}")]
         public IActionResult Delete(string kodebarang)
         {
+            var result = Get(kodebarang);
+            if (result == null)
+                return BadRequest($"Barang kode {kodebarang} tidak ditemukan");
+
             using (NpgsqlConnection conn = new NpgsqlConnection(strConn))
             {
                 string strSql = @"delete from barang where kodebarang=@kodebarang";

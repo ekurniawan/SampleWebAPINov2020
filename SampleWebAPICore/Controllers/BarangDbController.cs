@@ -81,9 +81,25 @@ namespace SampleWebAPICore.Controllers
         }
 
         // PUT api/<BarangDbController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{kodebarang}")]
+        public IActionResult Put(string kodebarang, Barang barang)
         {
+            using (NpgsqlConnection conn = new NpgsqlConnection(strConn))
+            {
+                string strSql = @"update barang set namabarang=@namabarang,
+                stok=@stok,hargabeli=@hargabeli,hargajual=@hargajual where kodebarang=@kodebarang";
+                var param = new { namabarang=barang.namabarang, stok=barang.stok, 
+                    hargabeli=barang.hargabeli,hargajual=barang.hargajual,kodebarang=kodebarang };
+                try
+                {
+                    conn.Execute(strSql, param);
+                    return Ok($"Data kode {barang.kodebarang} berhasil diupdate");
+                }
+                catch (NpgsqlException ex)
+                {
+                    return BadRequest(ex.Message);
+                }
+            }
         }
 
         // DELETE api/<BarangDbController>/5

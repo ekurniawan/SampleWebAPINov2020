@@ -30,22 +30,41 @@ namespace SampleWebAPICore.Controllers
         }
 
         // GET api/<MyBarangController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{kodebarang}")]
+        public Barang Get(string kodebarang)
         {
-            return "value";
+            var result = barangDal.GetById(kodebarang);
+            return result;
         }
 
         // POST api/<MyBarangController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(Barang barang)
         {
+            try
+            {
+                barangDal.Insert(barang);
+                return Ok($"Data {barang.namabarang} berhasil ditambah");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
         }
 
         // PUT api/<MyBarangController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{kodebarang}")]
+        public IActionResult Put(string kodebarang,Barang barang)
         {
+            try
+            {
+                barangDal.Update(kodebarang, barang);
+                return Ok($"Data barang dengan kode {barang.kodebarang} berhasil diupdate");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
         }
 
         // DELETE api/<MyBarangController>/5

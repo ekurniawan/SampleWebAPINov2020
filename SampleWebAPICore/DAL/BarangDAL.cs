@@ -42,6 +42,8 @@ namespace SampleWebAPICore.DAL
             }
         }
 
+        
+
         public IEnumerable<Barang> GetAll()
         {
             using(NpgsqlConnection conn = new NpgsqlConnection(GetConnStr()))
@@ -76,17 +78,68 @@ namespace SampleWebAPICore.DAL
 
         public Barang GetById(string kodebarang)
         {
-            throw new NotImplementedException();
+            using (NpgsqlConnection conn = new NpgsqlConnection(GetConnStr()))
+            {
+                string strSql = @"select * from barang where kodebarang=@kodebarang";
+                var param = new { kodebarang = kodebarang };
+                var result = conn.QuerySingleOrDefault<Barang>(strSql,param);
+                return result;
+            }
         }
 
         public void Insert(Barang barang)
         {
-            throw new NotImplementedException();
+            using (NpgsqlConnection conn = new NpgsqlConnection(GetConnStr()))
+            {
+                string strSql = @"insert into barang(kodebarang,namabarang,stok,hargabeli,hargajual) 
+                values(@kodebarang,@namabarang,@stok,@hargabeli,@hargajual)";
+                var param = new
+                {
+                    kodebarang = barang.kodebarang,
+                    namabarang = barang.namabarang,
+                    stok = barang.stok,
+                    hargabeli = barang.hargabeli,
+                    hargajual = barang.hargajual
+                };
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (NpgsqlException sqlEx)
+                {
+                    throw new Exception($"Error: {sqlEx.Message}");
+                }
+            }
         }
 
         public void Update(string kodebarang, Barang barang)
         {
-            throw new NotImplementedException();
+            using (NpgsqlConnection conn = new NpgsqlConnection(GetConnStr()))
+            {
+                //cek apakah data yg akan diupdate ditemukan
+                var result = GetById(kodebarang);
+                if (result == null)
+                {
+                    throw new Exception($"Data dengan kode {barang.kodebarang} tidak ditemukan");
+                }
+
+                //jika ditemukan, update data
+                string strSql = @"update barang set namabarang=@namabarang,stok=@stok,hargabeli=@hargabeli,
+                hargajual=@hargajual where kodebarang=@kodebarang";
+                var param = new
+                {
+                    namabarang = barang.namabarang,stok = barang.stok,hargabeli = barang.hargabeli,
+                    hargajual = barang.hargajual,kodebarang = kodebarang
+                };
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (NpgsqlException sqlEx)
+                {
+                    throw new Exception($"Error: {sqlEx.Message}");
+                }
+            }
         }
     }
 }

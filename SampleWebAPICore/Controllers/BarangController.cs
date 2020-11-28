@@ -14,8 +14,6 @@ namespace SampleWebAPICore.Controllers
     public class BarangController : ControllerBase
     {
        
-       
-
         private List<Barang> lstBarang = new List<Barang>();
         //konstruktor 
         public BarangController()

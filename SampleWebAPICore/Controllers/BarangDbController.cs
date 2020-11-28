@@ -37,17 +37,47 @@ namespace SampleWebAPICore.Controllers
             }
         }
 
+        //untuk get by id
         // GET api/<BarangDbController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{kodebarang}")]
+        public Barang Get(string kodebarang)
         {
-            return "value";
+            using (NpgsqlConnection conn = new NpgsqlConnection(strConn))
+            {
+                string strSql = @"select * from barang where kodebarang=@kodebarang";
+                var param = new { kodebarang = kodebarang };
+                var result = conn.QuerySingle<Barang>(strSql, param);
+                return result;
+            }
         }
 
         // POST api/<BarangDbController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(Barang barang)
         {
+            using (NpgsqlConnection conn = new NpgsqlConnection(strConn))
+            {
+                string strSql = @"insert into barang(kodebarang,namabarang,stok,hargabeli,hargajual) 
+                values(@kodebarang,@namabarang,@stok,@hargabeli,@hargajual)";
+                var param = new
+                {
+                    kodebarang = barang.kodebarang,
+                    namabarang = barang.namabarang,
+                    stok = barang.stok,
+                    hargabeli = barang.hargabeli,
+                    hargajual = barang.hargajual
+                };
+                try
+                {
+                    conn.Execute(strSql, param);
+                    //ok ini adalah http status 200
+                    return Ok($"Data barang {barang.kodebarang} berhasil ditambahkan ");
+                }
+                catch (NpgsqlException ex)
+                {
+                    return BadRequest($"Error: {ex.Message}");
+                }
+            }
         }
 
         // PUT api/<BarangDbController>/5
